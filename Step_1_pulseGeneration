@@ -1,0 +1,30 @@
+% Step 1
+
+Fe = 48000;
+fp = 8000;
+Tp = 0.01;
+n = 1024;
+
+% - Affichage d'un pulse RF dans le domaine temporel/fréquenciel.
+
+t = (0:n-1)/Fe;
+x = cos(2*pi*fp.*t).* (t <= Tp);
+
+y = fft(x);
+f = Fe/n*(0:n-1);
+
+figure(1);
+plot(t,x);
+
+figure(2);
+plot(f,abs(y));
+
+figure(3);
+plot(Fe/n*(-n/2:n/2-1),abs(fftshift(y)));
+
+% - Envoi et réception du pulse entre 2 ordinateurs.
+
+audio = audioplayer(x, Fe);
+playblocking(audio);
+playblocking(audio);
+playblocking(audio);
